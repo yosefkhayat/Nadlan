@@ -1,3 +1,6 @@
+using API.Extensions;
+using Application;
+using Application.Core;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -12,20 +15,7 @@ namespace API
             // Add services to the container.
 
             builder.Services.AddControllers();
-            //add seviece to coonction to the sqlite database
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-            builder.Services.AddDbContext<DataContext>(opt =>
-            {
-                opt.UseSqlite(connectionString);
-            });
-
-            builder.Services.AddCors(opt =>
-            {
-                opt.AddPolicy("CorsPolicy", policy =>
-                {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
-                });
-            });
+            builder.Services.AddApplicationServices(builder.Configuration);
             var app = builder.Build();
 
 
