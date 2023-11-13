@@ -1,9 +1,12 @@
 using API.Extensions;
+using API.Middleware;
 using Application;
 using Application.Core;
+using Application.Listings;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-
+using Microsoft.AspNetCore.Http;
 namespace API
 {
     public class Program
@@ -12,12 +15,14 @@ namespace API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            
+
             // Add services to the container.
 
             builder.Services.AddControllers();
             builder.Services.AddApplicationServices(builder.Configuration);
             var app = builder.Build();
-
+            app.UseMiddleware<ExceptionMiddleware>();
 
             //Create databse if not exist
             using (var scope = app.Services.CreateScope())
