@@ -19,6 +19,7 @@ namespace Domain
         public int Price { get; set; }
         public int Area { get; set; }
         public DateTime DateTime { get; set; }
+        public string Description { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,24 @@ namespace Persistence
     /// </summary>
     public class Seed
     {
-        public static void SeedData(DataContext context)
+        public static async void SeedData(DataContext context, UserManager<AppUser> userManager)
         {
+            if (!userManager.Users.Any())
+            {
+                var users = new List<AppUser>
+                {
+                    new AppUser { DisplayName = "Amir", UserName = "amir", Email = "amir@test.com", Bio="this is a test" },
+                    new AppUser { DisplayName = "Sandy", UserName = "sandy", Email = "sandy@test.com", Bio="this is a test" },
+                    new AppUser { DisplayName = "Sam", UserName = "sam", Email = "sam@test.com", Bio = "this is a test" },
+                    new AppUser { DisplayName = "Shani", UserName = "shani", Email = "shani@test.com", Bio="this is a test" }
+                };
+                foreach(var user in users)
+                {
+                    await userManager.CreateAsync(user, "Pa$$w0rd");
+                }
+            }
+
+
             if (!context.Listings.Any())
             {
                 var propertys = new List<Listing>
@@ -26,7 +43,8 @@ namespace Persistence
                         PostalCode = "3304895",
                         Price = 1000000,
                         Area = 110,
-                        DateTime = DateTime.Now.AddDays(126)
+                        DateTime = DateTime.Now.AddDays(126),
+                        Description="This is a good listing and have a lot of value"
  
                     },
                     new Listing
@@ -38,7 +56,8 @@ namespace Persistence
                         PostalCode = "3304895",
                         Price = 1500000,
                         Area = 90,
-                        DateTime = DateTime.Now.AddDays(156)
+                        DateTime = DateTime.Now.AddDays(156),
+                        Description="This is a good listing and have a lot of value"
                     },
                     new Listing
                     {
@@ -48,8 +67,9 @@ namespace Persistence
                         PostalCode = "3304895",
                         Price =5000000,
                         Area = 150,
-                        DateTime = DateTime.Now.AddDays(256)
-                        
+                        DateTime = DateTime.Now.AddDays(256),
+                        Description="This is a good listing and have a lot of value"
+
                     },
                     new Listing
                     {
@@ -59,7 +79,8 @@ namespace Persistence
                         PostalCode = "3304895",
                         Price = 500000,
                         Area = 50,
-                        DateTime = DateTime.Now.AddDays(56)
+                        DateTime = DateTime.Now.AddDays(56),
+                        Description="This is a good listing and have a lot of value"
                     },
                     new Listing
                     {
@@ -69,7 +90,8 @@ namespace Persistence
                         PostalCode = "3304895",
                         Price = 750000,
                         Area = 85,
-                        DateTime = DateTime.Now.AddDays(16) 
+                        DateTime = DateTime.Now.AddDays(16),
+                        Description="This is a good listing and have a lot of value"
                     },
                     new Listing
                     {
@@ -79,11 +101,12 @@ namespace Persistence
                         PostalCode = "3304895",
                         Price = 3000000,
                         Area = 75,
-                        DateTime = DateTime.Now.AddDays(186) 
+                        DateTime = DateTime.Now.AddDays(186),
+                        Description="This is a good listing and have a lot of value"
                     }
                 };
-                context.Listings.AddRangeAsync(propertys);
-                context.SaveChangesAsync();
+                await context.Listings.AddRangeAsync(propertys);
+                await context.SaveChangesAsync();
             }
         }
     }

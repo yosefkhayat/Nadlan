@@ -32,7 +32,7 @@ namespace Application.Listings
             {
                 var listing = await _context.Listings.FindAsync(request.Id);
                 
-                //if (listing == null) return null;
+                if (listing == null) return null;
 
                 _context.Remove(listing);
     
