@@ -13,6 +13,7 @@ namespace API.Controllers
     /// <summary>
     /// This class performs a definition to api services to listnigs table.
     /// </summary>
+    [AllowAnonymous]
     public class ListingsController : BaseApiController
     {
         //get all listing from database
