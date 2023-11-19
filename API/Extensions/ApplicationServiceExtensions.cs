@@ -1,8 +1,10 @@
 ﻿using Application;
 using Application.Core;
+using Application.Interfaces;
 using Application.Listings;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -37,6 +39,9 @@ namespace API.Extensions
             services.AddFluentValidationAutoValidation();
             services.AddFluentValidationClientsideAdapters();
             services.AddValidatorsFromAssemblyContaining<Create>();
+
+            services.AddScoped<IUserAccessor, UserAccessor>();
+
 
             return services;
         }

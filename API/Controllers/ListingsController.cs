@@ -13,7 +13,6 @@ namespace API.Controllers
     /// <summary>
     /// This class performs a definition to api services to listnigs table.
     /// </summary>
-    [AllowAnonymous]
     public class ListingsController : BaseApiController
     {
         //get all listing from database
@@ -38,6 +37,7 @@ namespace API.Controllers
         }
 
         //edit Listing with given id
+        [Authorize(Policy = "IsListingCreator")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(Guid id,Listing listing)
         {
@@ -46,10 +46,18 @@ namespace API.Controllers
         }
 
         //delete Listing with given id
+        [Authorize(Policy = "IsListingCreator")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));
         }
+
+        [HttpPost("{id}/visit")]
+        public async Task<IActionResult> Visit(Guid id)
+        {
+            return HandleResult(await Mediator.Send(new UpdateVisitor.Command { Id = id }));
+        }
+
     }
 }

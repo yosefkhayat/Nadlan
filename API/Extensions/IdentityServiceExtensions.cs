@@ -1,6 +1,8 @@
 ﻿using API.Services;
 using Domain;
+using Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
@@ -33,6 +35,15 @@ namespace API.Extensions
                           
                     };
                 });
+
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("IsListingCreator", policy =>
+                {
+                    policy.Requirements.Add(new IsCreatorRequirement());
+                });
+            });
+            services.AddTransient<IAuthorizationHandler, IsCreatorRequirementHandler>();
             services.AddScoped<TokenService>();
 
             return services;

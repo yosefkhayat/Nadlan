@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Application.Profiles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Application.Listings
 {
-    /// <summary>
-    /// This class performs a difinition to a table Listnig.
-    /// </summary>
-    public class Listing
+    public class ListingDto
     {
         public Guid Id { get; set; }
         public string? Address { get; set; }
@@ -20,8 +18,8 @@ namespace Domain
         public int Area { get; set; }
         public DateTime DateTime { get; set; }
         public string Description { get; set; }
+        public string CreatorUsername { get; set; }
         public bool IsCancelled { get; set; }
-        public ICollection<ListingVisitors> Visitors { get; set; } = new List<ListingVisitors>();
-
+        public ICollection<Profile> Visitors { get; set; }
     }
 }
