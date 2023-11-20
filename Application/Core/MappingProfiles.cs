@@ -22,7 +22,7 @@ namespace Application.Core
                 .FirstOrDefault(x => x.IsCreator).AppUser.UserName));
             CreateMap<ListingVisitors, Profiles.Profile>()
                 .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.AppUser.DisplayName))
-                .ForMember(d => d.Userame, o => o.MapFrom(s => s.AppUser.UserName))
+                .ForMember(d => d.Username, o => o.MapFrom(s => s.AppUser.UserName))
                 .ForMember(d => d.Bio, o => o.MapFrom(s => s.AppUser.Bio));
         }
     }
