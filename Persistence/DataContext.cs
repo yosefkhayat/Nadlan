@@ -19,6 +19,7 @@ namespace Persistence
         }   
         public DbSet<Listing> Listings { get; set; }
         public DbSet<ListingVisitors> ListingVisters { get; set; }
+        public DbSet<Photo> Photos { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -20,6 +20,6 @@ namespace Application.Listings
         public string Description { get; set; }
         public string CreatorUsername { get; set; }
         public bool IsCancelled { get; set; }
-        public ICollection<Profile> Visitors { get; set; }
+        public ICollection<VisitorDto> Visitors { get; set; }
     }
 }

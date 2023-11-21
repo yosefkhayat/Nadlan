@@ -20,10 +20,13 @@ namespace Application.Core
             CreateMap<Listing, ListingDto>()
                 .ForMember(d => d.CreatorUsername, o => o.MapFrom(s => s.Visitors
                 .FirstOrDefault(x => x.IsCreator).AppUser.UserName));
-            CreateMap<ListingVisitors, Profiles.Profile>()
+            CreateMap<ListingVisitors, VisitorDto>()
                 .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.AppUser.DisplayName))
                 .ForMember(d => d.Username, o => o.MapFrom(s => s.AppUser.UserName))
-                .ForMember(d => d.Bio, o => o.MapFrom(s => s.AppUser.Bio));
+                .ForMember(d => d.Bio, o => o.MapFrom(s => s.AppUser.Bio))
+                .ForMember(d => d.Image, o => o.MapFrom(s => s.AppUser.Photos.FirstOrDefault(x => x.IsMain).Url));
+            CreateMap<AppUser, Profiles.Profile>()
+                .ForMember(d => d.Image, o => o.MapFrom(s => s.Photos.FirstOrDefault(x => x.IsMain).Url));
         }
     }
 }

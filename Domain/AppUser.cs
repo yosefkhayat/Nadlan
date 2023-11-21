@@ -13,5 +13,6 @@ namespace Domain
         public string DisplayName { get; set; }
         public string Bio { get; set; }
         public ICollection<ListingVisitors> Listings { get; set; }
+        public ICollection<Photo> Photos { get; set; }
     }
 }
