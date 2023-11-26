@@ -20,6 +20,7 @@ namespace Persistence
         public DbSet<Listing> Listings { get; set; }
         public DbSet<ListingVisitors> ListingVisters { get; set; }
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -38,7 +39,10 @@ namespace Persistence
                 .WithMany(a => a.Visitors)
                 .HasForeignKey(aa => aa.ListingId);
 
-
+            builder.Entity<Comment>()
+                .HasOne(a=> a.Listing)
+                .WithMany(c=> c.comments)
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

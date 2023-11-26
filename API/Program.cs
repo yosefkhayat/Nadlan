@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using API.SignalR;
 
 namespace API
 {
@@ -60,6 +61,7 @@ namespace API
 
             app.UseCors("CorsPolicy");
             app.MapControllers();
+            app.MapHub<ChatHub>("/chat");
 
             app.Run();
         }

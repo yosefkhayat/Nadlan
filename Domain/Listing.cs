@@ -22,6 +22,7 @@ namespace Domain
         public string Description { get; set; }
         public bool IsCancelled { get; set; }
         public ICollection<ListingVisitors> Visitors { get; set; } = new List<ListingVisitors>();
+        public ICollection<Comment> comments { get; set; } = new List<Comment>();
 
     }
 }
