@@ -1,4 +1,5 @@
 ﻿using Application;
+using Application.Core;
 using Application.Listings;
 using Domain;
 using MediatR;
@@ -17,9 +18,9 @@ namespace API.Controllers
     {
         //get all listing from database
         [HttpGet]
-        public async Task<IActionResult> GetListinges()
+        public async Task<IActionResult> GetListinges([FromQuery] ListingParams param)
         {
-            return HandleResult(await Mediator.Send(new List.Query()));
+            return HandlePagedResult(await Mediator.Send(new List.Query { Params = param }));
         }
 
         //get listing with given id

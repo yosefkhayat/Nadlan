@@ -1,16 +1,11 @@
 ﻿using Application.Core;
+using Application.Interfaces;
 using Application.Listings;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application
 {
@@ -20,25 +15,44 @@ namespace Application
     /// </summary>
     public class List
     {
-        public class Query : IRequest<Result<List<ListingDto>>> { }
-        public class Handler : IRequestHandler<Query, Result<List<ListingDto>>>
+        public class Query : IRequest<Result<PagedList<ListingDto>>>
+        {
+            public ListingParams Params { get; set; }
+        }
+        public class Handler : IRequestHandler<Query, Result<PagedList<ListingDto>>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
+            private readonly IUserAccessor _userAccessor;
 
-            public Handler(DataContext context, IMapper mapper)
+            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
                 _context = context;
                 _mapper = mapper;
+                _userAccessor = userAccessor;
             }
 
-            public async Task<Result<List<ListingDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<PagedList<ListingDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var listings = await _context.Listings
-                    .ProjectTo<ListingDto>(_mapper.ConfigurationProvider)
-                    .ToListAsync(cancellationToken);
+                var query = _context.Listings
+                    .OrderBy(d=> d.DateTime)
+                    .ProjectTo<ListingDto>(_mapper.ConfigurationProvider,
+                    new { currentUsername = _userAccessor.GetUsername() })
+                    .AsQueryable() ;
 
-                return Result<List<ListingDto>>.Success(listings);
+                if (request.Params.IsVisiting && !request.Params.IsCreator)
+                {
+                    query = query.Where(x=>x.Visitors.Any(a=> a.Username == _userAccessor.GetUsername()));
+                }
+
+                if (request.Params.IsCreator && !request.Params.IsVisiting)
+                {
+                    query = query.Where(x=> x.CreatorUsername == _userAccessor.GetUsername());
+                }
+
+                return Result<PagedList<ListingDto>>.Success(
+                    await PagedList<ListingDto>.createAsync(query,request.Params.PageNumber,request.Params.PageSize)
+                    );
             }
         }
     }
