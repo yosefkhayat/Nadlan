@@ -15,7 +15,7 @@ namespace API.Services
             _config = config;
         }
 
-        public string CreateToken(AppUser user)
+        public string CreateToken(AppUser user, IList<string> roles)
         {
             var claims = new List<Claim>
             {
@@ -23,6 +23,10 @@ namespace API.Services
                 new Claim(ClaimTypes.NameIdentifier,user.Id),
                 new Claim(ClaimTypes.Email,user.Email)
             };
+            foreach (var userRole in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, userRole));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);

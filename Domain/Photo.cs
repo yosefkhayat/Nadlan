@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
+    /// <summary>
+    /// This class performs a difinition to a table photo.
+    /// </summary>
     public class Photo
     {
         public string Id { get; set; }

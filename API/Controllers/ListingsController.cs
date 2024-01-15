@@ -47,7 +47,7 @@ namespace API.Controllers
         }
 
         //delete Listing with given id
-        [Authorize(Policy = "IsListingCreator")]
+        [Authorize(Roles ="Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {

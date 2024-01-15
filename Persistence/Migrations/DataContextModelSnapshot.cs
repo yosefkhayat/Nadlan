@@ -114,7 +114,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ListingId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Listing", b =>
@@ -153,7 +153,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Listings");
+                    b.ToTable("Listings", (string)null);
                 });
 
             modelBuilder.Entity("Domain.ListingVisitors", b =>
@@ -171,7 +171,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ListingId");
 
-                    b.ToTable("ListingVisters");
+                    b.ToTable("ListingVisters", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Photo", b =>
@@ -193,7 +193,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("Photos");
+                    b.ToTable("Photos", (string)null);
                 });
 
             modelBuilder.Entity("Domain.UserFollowing", b =>
@@ -208,7 +208,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("TargetId");
 
-                    b.ToTable("UserFollowings");
+                    b.ToTable("UserFollowings", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

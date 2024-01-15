@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
+    /// <summary>
+    /// This class performs a difinition to a table comment.
+    /// </summary>
     public class Comment
     {
         public int Id { get; set; }

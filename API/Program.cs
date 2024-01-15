@@ -43,8 +43,9 @@ namespace API
                 {
                     var context = services.GetRequiredService<DataContext>();
                     var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     context.Database.Migrate();
-                    Seed.SeedData(context, userManager);
+                    Seed.SeedData(context, userManager,roleManager);
                 }
                 catch (Exception ex)
                 {
@@ -52,6 +53,9 @@ namespace API
                     logger.LogError(ex, "An error occured dueing migration");
                 }
             }
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles(); 
 
             // Configure the HTTP request pipeline.
 
@@ -62,6 +66,7 @@ namespace API
             app.UseCors("CorsPolicy");
             app.MapControllers();
             app.MapHub<ChatHub>("/chat");
+            app.MapFallbackToController("Index", "Fallback");
 
             app.Run();
         }

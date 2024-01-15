@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
+    /// <summary>
+    /// This class performs a difinition to a table AppUser.
+    /// </summary>
     public class AppUser : IdentityUser
     {
         public string DisplayName { get; set; }

@@ -42,12 +42,12 @@ namespace Application
 
                 if (request.Params.IsVisiting && !request.Params.IsCreator)
                 {
-                    query = query.Where(x=>x.Visitors.Any(a=> a.Username == _userAccessor.GetUsername()));
+                    query = query.Where(x=>x.Visitors.Any(a=> a.Username == _userAccessor.GetUsername()) && x.CreatorUsername != _userAccessor.GetUsername());
                 }
 
                 if (request.Params.IsCreator && !request.Params.IsVisiting)
                 {
-                    query = query.Where(x=> x.CreatorUsername == _userAccessor.GetUsername());
+                    query = query.Where(x=> x.CreatorUsername == _userAccessor.GetUsername() );
                 }
 
                 return Result<PagedList<ListingDto>>.Success(

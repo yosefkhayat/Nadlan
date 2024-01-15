@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,30 @@ namespace Persistence
     /// </summary>
     public class Seed
     {
-        public static async void SeedData(DataContext context, UserManager<AppUser> userManager)
+        public static async void SeedData(DataContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            var adminRole = new IdentityRole("Admin");
+            var userRole = new IdentityRole("User");
+            if (!context.Roles.Any())
+            {
+                await roleManager.CreateAsync(adminRole);
+                await roleManager.CreateAsync(userRole);
+            }
+            
+
             if (!userManager.Users.Any() && !context.Listings.Any())
             {
+                
+                    var adminUser = new AppUser
+                    {
+                        DisplayName = "Admin",
+                        UserName = "admin@test.com",
+                        Email = "admin@test.com",
+                        Bio = "admin test"
+                    };
+                    var result = await userManager.CreateAsync(adminUser, "Pa$$w0rd");
+                    await userManager.AddToRoleAsync(adminUser, adminRole.Name);
+                
                 var users = new List<AppUser>
                 {
                     new AppUser 
@@ -51,6 +72,8 @@ namespace Persistence
                 foreach(var user in users)
                 {
                     await userManager.CreateAsync(user, "Pa$$w0rd");
+                    await userManager.AddToRoleAsync(user, userRole.Name);
+
                 }
 
                 var propertys = new List<Listing>
@@ -155,7 +178,7 @@ namespace Persistence
                     },
                     new Listing
                     {
-                        Address = "galil 127",
+                        Address = "galil 27",
                         City = "haifa",
                         Region = "North",
                         PostalCode = "3304895",
@@ -179,7 +202,7 @@ namespace Persistence
                     },
                     new Listing
                     {
-                        Address = "alnbe 127",
+                        Address = "yafenof 65",
                         City = "haifa",
                        Region = "North",
                         PostalCode = "3304895",
@@ -197,6 +220,222 @@ namespace Persistence
                             new ListingVisitors
                             {
                                 AppUser = users[1],
+                                IsCreator = false
+                            }
+                        }
+                    },
+                    new Listing
+                    {
+                        Address = "talmana 28",
+                        City = "haifa",
+                       Region = "North",
+                        PostalCode = "3304895",
+                        Price = 3000000,
+                        Area = 75,
+                        DateTime = DateTime.Now.AddDays(186),
+                        Description="This is a good listing and have a lot of value",
+                        Visitors = new List<ListingVisitors>
+                        {
+                            new ListingVisitors
+                            {
+                                AppUser = users[2],
+                                IsCreator = true
+                            },
+                            new ListingVisitors
+                            {
+                                AppUser = users[1],
+                                IsCreator = false
+                            }
+                        }
+                    },
+                    new Listing
+                    {
+                        Address = "hashalom 30",
+                        City = "haifa",
+                       Region = "North",
+                        PostalCode = "3304895",
+                        Price = 3000000,
+                        Area = 75,
+                        DateTime = DateTime.Now.AddDays(186),
+                        Description="This is a good listing and have a lot of value",
+                        Visitors = new List<ListingVisitors>
+                        {
+                            new ListingVisitors
+                            {
+                                AppUser = users[1],
+                                IsCreator = true
+                            },
+                            new ListingVisitors
+                            {
+                                AppUser = users[2],
+                                IsCreator = false
+                            }
+                        }
+                    },
+                    new Listing
+                    {
+                        Address = "benyhoda 11",
+                        City = "haifa",
+                       Region = "North",
+                        PostalCode = "3304895",
+                        Price = 3000000,
+                        Area = 75,
+                        DateTime = DateTime.Now.AddDays(186),
+                        Description="This is a good listing and have a lot of value",
+                        Visitors = new List<ListingVisitors>
+                        {
+                            new ListingVisitors
+                            {
+                                AppUser = users[3],
+                                IsCreator = true
+                            },
+                            new ListingVisitors
+                            {
+                                AppUser = users[1],
+                                IsCreator = false
+                            }
+                        }
+                    },
+                    new Listing
+                    {
+                        Address = "tsalbanim 38",
+                        City = "haifa",
+                       Region = "North",
+                        PostalCode = "3304895",
+                        Price = 3000000,
+                        Area = 75,
+                        DateTime = DateTime.Now.AddDays(186),
+                        Description="This is a good listing and have a lot of value",
+                        Visitors = new List<ListingVisitors>
+                        {
+                            new ListingVisitors
+                            {
+                                AppUser = users[1],
+                                IsCreator = true
+                            },
+                            new ListingVisitors
+                            {
+                                AppUser = users[3],
+                                IsCreator = false
+                            }
+                        }
+                    },
+                    new Listing
+                    {
+                        Address = "khory 48",
+                        City = "haifa",
+                       Region = "North",
+                        PostalCode = "3304895",
+                        Price = 3000000,
+                        Area = 75,
+                        DateTime = DateTime.Now.AddDays(186),
+                        Description="This is a good listing and have a lot of value",
+                        Visitors = new List<ListingVisitors>
+                        {
+                            new ListingVisitors
+                            {
+                                AppUser = users[1],
+                                IsCreator = true
+                            },
+                            new ListingVisitors
+                            {
+                                AppUser = users[3],
+                                IsCreator = false
+                            }
+                        }
+                    },
+                    new Listing
+                    {
+                        Address = "kesaria 59",
+                        City = "haifa",
+                       Region = "North",
+                        PostalCode = "3304895",
+                        Price = 3000000,
+                        Area = 75,
+                        DateTime = DateTime.Now.AddDays(186),
+                        Description="This is a good listing and have a lot of value",
+                        Visitors = new List<ListingVisitors>
+                        {
+                            new ListingVisitors
+                            {
+                                AppUser = users[3],
+                                IsCreator = true
+                            },
+                            new ListingVisitors
+                            {
+                                AppUser = users[2],
+                                IsCreator = false
+                            }
+                        }
+                    },
+                    new Listing
+                    {
+                        Address = "yodlamedperets 94",
+                        City = "haifa",
+                       Region = "North",
+                        PostalCode = "3304895",
+                        Price = 3000000,
+                        Area = 75,
+                        DateTime = DateTime.Now.AddDays(186),
+                        Description="This is a good listing and have a lot of value",
+                        Visitors = new List<ListingVisitors>
+                        {
+                            new ListingVisitors
+                            {
+                                AppUser = users[1],
+                                IsCreator = true
+                            },
+                            new ListingVisitors
+                            {
+                                AppUser = users[3],
+                                IsCreator = false
+                            }
+                        }
+                    },
+                    new Listing
+                    {
+                        Address = "haneviem 4",
+                        City = "haifa",
+                       Region = "North",
+                        PostalCode = "3304895",
+                        Price = 3000000,
+                        Area = 75,
+                        DateTime = DateTime.Now.AddDays(186),
+                        Description="This is a good listing and have a lot of value",
+                        Visitors = new List<ListingVisitors>
+                        {
+                            new ListingVisitors
+                            {
+                                AppUser = users[3],
+                                IsCreator = true
+                            },
+                            new ListingVisitors
+                            {
+                                AppUser = users[2],
+                                IsCreator = false
+                            }
+                        }
+                    },
+                    new Listing
+                    {
+                        Address = "yadlebanem 188",
+                        City = "haifa",
+                       Region = "North",
+                        PostalCode = "3304895",
+                        Price = 3000000,
+                        Area = 75,
+                        DateTime = DateTime.Now.AddDays(186),
+                        Description="This is a good listing and have a lot of value",
+                        Visitors = new List<ListingVisitors>
+                        {
+                            new ListingVisitors
+                            {
+                                AppUser = users[1],
+                                IsCreator = true
+                            },
+                            new ListingVisitors
+                            {
+                                AppUser = users[3],
                                 IsCreator = false
                             }
                         }

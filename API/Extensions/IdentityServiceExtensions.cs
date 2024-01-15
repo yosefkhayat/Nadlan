@@ -4,6 +4,7 @@ using Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
 using System.Text;
@@ -15,7 +16,7 @@ namespace API.Extensions
         public static IServiceCollection AddIdentityServices(this IServiceCollection services,
             IConfiguration config)
         {
-            services.AddIdentityCore<AppUser>(opt =>
+            services.AddIdentity<AppUser,IdentityRole>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
             })
@@ -23,7 +24,11 @@ namespace API.Extensions
                 .AddSignInManager<SignInManager<AppUser>>();
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]!));
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
                 .AddJwtBearer(opt =>
                 {
                     opt.TokenValidationParameters = new TokenValidationParameters
@@ -49,6 +54,7 @@ namespace API.Extensions
 
             services.AddAuthorization(opt =>
             {
+                opt.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
                 opt.AddPolicy("IsListingCreator", policy =>
                 {
                     policy.Requirements.Add(new IsCreatorRequirement());

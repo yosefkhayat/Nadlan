@@ -38,7 +38,8 @@ namespace Persistence
             builder.Entity<ListingVisitors>()
                 .HasOne(u => u.Listing)
                 .WithMany(a => a.Visitors)
-                .HasForeignKey(aa => aa.ListingId);
+                .HasForeignKey(aa => aa.ListingId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Comment>()
                 .HasOne(a=> a.Listing)
